@@ -20,7 +20,9 @@ jobs:
       run: |-
         #!/usr/bin/bash
         swift test --enable-code-coverage --verbose
-        xcrun llvm-cov export -format="lcov" .build/debug/StoredInPackageTests.xctest/Contents/MacOS/StoredInPackageTests -instr-profile .build/debug/codecov/default.profdata > info.lcov 
+        xcrun llvm-cov export -format="lcov" .build/debug/StoredInPackageTests.xctest/Contents/MacOS/StoredInPackageTests -instr-profile \
+         .build/debug/codecov/default.profdata \
+         > info.lcov 
 
     - name: Upload test coverage to Codecov
       uses: codecov/codecov-action@v2
