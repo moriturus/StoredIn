@@ -20,6 +20,7 @@ import Foundation
 /// - `Date`
 /// - `Array where Element: Storable`
 /// - `Dictionary where Key == String, Value: Storable`
+/// - `Optional where Wrapped: Storable`
 public protocol Storable {
     // marker protocol
 }
@@ -78,6 +79,10 @@ extension Dictionary: Storable where Key == String, Value: Storable {
     // marker implementation
 }
 
+extension Optional: Storable where Wrapped: Storable {
+    // none
+}
+
 // MARK: - StoringTypeConvertible
 
 /// `StoringTypeConvertible` provides data conversion interfaces.
@@ -96,6 +101,7 @@ extension Dictionary: Storable where Key == String, Value: Storable {
 /// - `Date`
 /// - `Array where Element: Storable`
 /// - `Dictionary where Key == String, Value: Storable`
+/// - `Optional where Wrapped: Storable`
 public protocol StoringTypeConvertible {
     /// The actual type to be stored in ``Store``.
     associatedtype StoringType: Storable
@@ -169,5 +175,9 @@ extension Array: StoringTypeConvertible where Element: Storable {
 // MARK: - Dictionary + StoringTypeConvertible
 
 extension Dictionary: StoringTypeConvertible where Key == String, Value: Storable {
+    public typealias StoringType = Self
+}
+
+extension Optional: StoringTypeConvertible where Wrapped: Storable {
     public typealias StoringType = Self
 }
