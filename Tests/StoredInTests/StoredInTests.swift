@@ -9,6 +9,7 @@ import XCTest
 
 final class SharedDictionary: Store {
     typealias Key = String
+    
     var inner: [Key: Any] = [:]
     
     func containsValue(forKey key: Key) -> Bool {
@@ -43,8 +44,6 @@ final class StoredInTests: XCTestCase {
         struct Foo {
             @StoredIn(store: sharedDictionary, key: "key", default: 0)
             var value: Int
-            @StoredIn(store: sharedDictionary, key: "key2", default: 0.0)
-            var value2: Float
         }
         
         var x = Foo()
@@ -52,6 +51,21 @@ final class StoredInTests: XCTestCase {
         
         x.value = 1
         XCTAssertEqual(x.value, sharedDictionary.inner["key"] as? Int)
+    }
+    
+    func testStoredInOptionalIntValue() {
+        struct Foo {
+            @StoredIn(store: sharedDictionary, key: "key", default: nil)
+            var value: Int?
+        }
+        
+        var x = Foo()
+        XCTAssertEqual(x.value, nil)
+        
+        x.value = 3
+        XCTAssertEqual(x.value, 3)
+        XCTAssertEqual(sharedDictionary.inner["key"] as? Int?, 3)
+        XCTAssertEqual(x.value, sharedDictionary.inner["key"] as? Int?)
     }
     
     func testOnceStoredInIntValue() {

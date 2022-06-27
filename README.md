@@ -21,6 +21,8 @@ import StoredIn
 
 // implement the `Store` where your data are saved.
 final class SharedDictionary: Store {
+    typealias Key = String
+    
     var inner: [String: Any] = [:]
     
     func containsValue(forKey key: String) -> Bool {
